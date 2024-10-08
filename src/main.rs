@@ -5,7 +5,7 @@ struct Price(u64);
 struct Percentage(u64);
 
 // PRECISION for using fixed point decimals
-const PRECISION: u64 = 1000_000;
+const PRECISION: u64 = 1_000_000;
 
 struct LpPool {
     price: Price,
@@ -54,8 +54,10 @@ impl LpPool {
             return Err("Not enough LP tokens.");
         }
         
-        let token_return = (lp_token_amount.0 as f64 * self.token_amount.0 as f64 / self.lp_token_amount.0 as f64) as u64;
-        let staked_token_return = (lp_token_amount.0 as f64 * self.st_token_amount.0 as f64 / self.lp_token_amount.0 as f64) as u64;
+        
+        let token_return = (lp_token_amount.0 * self.token_amount.0 / self.lp_token_amount.0) as u64;
+        let staked_token_return = (lp_token_amount.0 * self.st_token_amount.0 / self.lp_token_amount.0) as u64;
+
     
         if token_return > self.token_amount.0 {
             return Err("Not enough tokens available");
